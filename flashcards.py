@@ -1,19 +1,19 @@
-from datetime import datetime
-from flask import Flask
+from flask import Flask, render_template
+
+from model import db
 
 app = Flask(__name__)
 
+
 @app.route("/")
 def welcome():
-    return "Welcome to my Flash Cards application!"
+    return render_template(
+        "welcome.html",
+        message="Here's a message from the view.",
+    )
 
-@app.route("/date")
-def date():
-    return "This page was served at " + str(datetime.now())
 
-count = 0
-@app.route("/count_views")
-def count_views():
-    global count
-    count += 1
-    return "This page was viewed at " + str(count)  + " times."
+@app.route("/card")
+def card_view():
+    card = db[0]
+    return render_template("card.html", card=card)
